@@ -1,0 +1,55 @@
+/* ヘッダースタイル */
+.header {
+  background-color: #333;
+  padding: 10px 0;
+  color: #fff;
+  text-align: center;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+}
+
+/* メインコンテンツに適用するスタイル */
+.main-content {
+  margin-top: 80px;
+  /* ヘッダーの高さを考慮してマージンを追加 */
+  padding: 20px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.header nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 15px;
+}
+
+.header nav ul li {
+  display: inline;
+}
+
+.header nav ul li a {
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 10px;
+}
+
+.header nav ul li a:hover {
+  background-color: #555;
+  border-radius: 5px;
+}
