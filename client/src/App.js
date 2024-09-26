@@ -36,6 +36,7 @@ const App = () => {
             <Route path="/" element={<Dashboard />} />
             <Route path="/add-product" element={<ProductForm />} />
             <Route path="/alerts" element={<StockAlert />} />{' '}
+            <Route path="/products/:id" element={ <ProductDetail /> }></Route>
             {/* 在庫アラート */}
           </Routes>
         </div>
