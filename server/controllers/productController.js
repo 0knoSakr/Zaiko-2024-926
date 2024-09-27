@@ -11,8 +11,7 @@ exports.getAllProducts = (req, res) => {
 // 特定の商品の取得
 exports.getProductById = (req, res) => {
   const { id } = req.params;
-  console.log(req.params);
-  Product.getById((err, data) => {
+  Product.getById(id, (err, data) => {
     if (err) res.status(500).send({ message: err.message });
     else res.send(data);
   });

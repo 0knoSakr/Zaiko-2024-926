@@ -19,7 +19,7 @@ Product.getAll = (result) => {
 };
 
 // 特定の商品の取得
-Product.getById = (result, id) => {
+Product.getById = (id, result) => {
   db.query('SELECT * FROM products where id = ?', [id], (err, res) => {
     if (err) {
       result(err, null);
