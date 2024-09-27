@@ -18,6 +18,17 @@ Product.getAll = (result) => {
   });
 };
 
+// 特定の商品の取得
+Product.getById = (result, id) => {
+  db.query('SELECT * FROM products where id = ?', [id], (err, res) => {
+    if (err) {
+      result(err, null);
+      return;
+    }
+    result(null, res);
+  });
+};
+
 // 商品の追加
 Product.create = (newProduct, result) => {
   db.query('INSERT INTO products SET ?', newProduct, (err, res) => {

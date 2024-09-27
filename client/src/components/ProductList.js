@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api'; // api.jsをインポート
+import { Link } from 'react-router-dom';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -19,6 +20,7 @@ const ProductList = () => {
         {products.map((product) => (
           <li key={product.id}>
             {product.name} - 在庫: {product.stock}
+            <button><Link to={`/products/${product.id}`}>詳細へ</Link></button>
           </li>
         ))}
       </ul>
