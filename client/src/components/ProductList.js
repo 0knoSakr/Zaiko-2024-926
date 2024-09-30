@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api'; // api.jsをインポート
 import { Link } from 'react-router-dom';
-import fetchProducts from '../services/productService';
+import { fetchProducts } from '../services/productService';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [items, setItems] = useState('');
   const [sku, setSku] = useState('');
 
-  useEffect(() => {
-    const loadProducts = async () => {
+  //商品をロードする関数
+  const LoadProducts = async () => {
+    try {
       const result = await fetchProducts(items, sku);
-      setProducts(result)
+      setProducts(result);
+    } catch (error) {
+      console.error("商品情報の取得に失敗しました:", error);
     }
-    loadProducts();
-    // api.jsを通じてAPIリクエストを送る
-    api
-      .get('/products')
-      .then((response) => setProducts(response.data))
-      .catch((error) => console.error('商品情報の取得に失敗しました:', error));
+  };
+
+  //コンポーネントがマウントされたときとitemsまたはskuが変更されたとき
+  //商品をロード
+  useEffect(() => {
+    LoadProducts();
   }, [items, sku]);
 
   return (
