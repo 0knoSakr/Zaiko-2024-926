@@ -1,45 +1,33 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { fetchProducts } from "../services/productService";
+import productService from "../services/productService";
 
 const ProductList = () => {
+  const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState([]);
-  const [items, setItems] = useState("");
-  const [sku, setSku] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  //商品をロードする関数
-  const loadProducts = useCallback(async () => {
+  const handleSearch = async () => {
     try {
-      const result = await fetchProducts(items, sku);
-      setProducts(result);
+      const response = await productService.searchProducts(searchTerm);
+      setProducts(response.data);
+      setErrorMessage(response.data.length === 0 ? '該当する商品がありません。' : '');
     } catch (error) {
-      console.error("商品情報の取得に失敗しました:", error);
+      setErrorMessage("検索に失敗しました。");
     }
-  },[items, sku]);
-
-  //コンポーネントがマウントされたときとitemsまたはskuが変更されたとき
-  //商品をロード
-  useEffect(() => {
-    loadProducts();
-  }, [loadProducts]);
+  };
 
   return (
     <div>
       <h2>商品リスト</h2>
       <input
         type="text"
-        value={items}
-        onChange={(e) => setItems(e.target.value)}
-        placeholder="商品名"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder="商品名またはSKUで検索"
       />
-      <button onClick={loadProducts}>商品名で検索</button>
-      <input
-        type="text"
-        value={sku}
-        onChange={(e) => setSku(e.target.value)}
-        placeholder="SKU"
-      />
-      <button onClick={loadProducts}>SKUで検索</button>
+      <button onClick={handleSearch}>検索</button>
+      {errorMessage && <p>{ errorMessage }</p>}
       <ul>
         {products.map((product) => (
           <li key={product.id}>
