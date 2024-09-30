@@ -52,3 +52,24 @@ exports.getLowStockProducts = (req, res) => {
     }
   });
 };
+
+// 商品名とskuで検索しフィルターで商品データを返す
+exports.getProducts = async (req, res) => {
+  const { name, sku } = req.query;
+  try {
+    const products = await Product.findAll({
+      where: {
+        name: {
+          [Op.like]: `%${name || ''}%`
+        },
+        sku: {
+          [Op.like]: `%${sku || ''}%`
+        }
+      }
+    });
+    res.json(products);
+  } catch (error) {
+    console.error('商品取得エラー:', error);
+    res.status(500).json({ message: '商品取得に失敗しました' });
+  }
+};

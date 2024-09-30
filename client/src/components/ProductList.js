@@ -1,21 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api'; // api.jsをインポート
 import { Link } from 'react-router-dom';
+import fetchProducts from '../services/productService';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
+  const [items, setItems] = useState('');
+  const [sku, setSku] = useState('');
 
   useEffect(() => {
+    const loadProducts = async () => {
+      const result = await fetchProducts(items, sku);
+      setProducts(result)
+    }
+    loadProducts();
     // api.jsを通じてAPIリクエストを送る
     api
       .get('/products')
       .then((response) => setProducts(response.data))
       .catch((error) => console.error('商品情報の取得に失敗しました:', error));
-  }, []);
+  }, [items, sku]);
 
   return (
     <div>
       <h2>商品リスト</h2>
+      <input type="text"
+        value={items}
+        onChange={(e) => setItems(e.target.value)}
+      />
+      <button>商品名で検索</button>
+      <input type="text"
+        value={sku}
+        onChange={(e) => setSku(e.target.value)}
+      />
+      <button>SKUで検索</button>
       <ul>
         {products.map((product) => (
           <li key={product.id}>

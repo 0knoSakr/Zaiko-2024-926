@@ -21,9 +21,21 @@ export const getLowStockProducts = () => {
   return api.get('/products/low-stock');
 };
 
+// 商品検索
+export const fetchProducts = async (name = '', sku = '') => {
+  try {
+    const response = await api.get(`/products?name=${name}&sku=${sku}`);
+    return response.data;
+  } catch (error) {
+    console.error('商品取得エラー:', error);
+    throw error;
+  }
+};
+
 export default {
   getProducts,
   getProductById,
   addProduct,
   getLowStockProducts,
+  fetchProducts,
 };
