@@ -1,4 +1,15 @@
 const Product = require('../models/productModel');
+const productModel = require('../models/productModel');
+
+const searchProducts = async (req, res) => {
+  const { name, sku } = req.query;
+  try {
+    const products = await productModel.searchProducts(name, sku);
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ message: '検索中にエラーが発生しました。' });
+  }
+};
 
 // 全商品の取得
 exports.getAllProducts = (req, res) => {
@@ -53,23 +64,4 @@ exports.getLowStockProducts = (req, res) => {
   });
 };
 
-// 商品名とskuで検索しフィルターで商品データを返す
-exports.getProducts = async (req, res) => {
-  const { name, sku } = req.query;
-  try {
-    const products = await Product.findAll({
-      where: {
-        name: {
-          [Op.like]: `%${name || ''}%`
-        },
-        sku: {
-          [Op.like]: `%${sku || ''}%`
-        }
-      }
-    });
-    res.json(products);
-  } catch (error) {
-    console.error('商品取得エラー:', error);
-    res.status(500).json({ message: '商品取得に失敗しました' });
-  }
-};
+exports.searchProducts = searchProducts;

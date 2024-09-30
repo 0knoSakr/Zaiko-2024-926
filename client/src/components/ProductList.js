@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import productService from "../services/productService";
+import api from "../services/api";
 
 const ProductList = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [products, setProducts] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");//検索するためのデータを持ってくる
+  const [products, setProducts] = useState([]);//一覧表示
+  const [errorMessage, setErrorMessage] = useState("");//検索結果の可否
+  const [searchResults, setSearchResults] = useState([]);//検索結果の保持
+
+  useEffect(() => {
+    // api.jsを通じてAPIリクエストを送る
+    api
+      .get('/products')
+      .then((response) => setProducts(response.data))
+      .catch((error) => console.error('商品情報の取得に失敗しました:', error));
+  }, []);
 
   const handleSearch = async () => {
     try {
@@ -16,6 +26,7 @@ const ProductList = () => {
       setErrorMessage("検索に失敗しました。");
     }
   };
+  console.log(products)
 
   return (
     <div>

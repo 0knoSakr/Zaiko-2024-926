@@ -23,7 +23,7 @@ export const getLowStockProducts = () => {
 };
 
 export const searchProducts = async (searchTerm) => {
-  return await axios.get(`${api}/products/seach?name=${searchTerm}&sku=${searchTerm}`);
+  return await axios.get(`${api}/products/search?name=${searchTerm}&sku=${searchTerm}`);
 }
 
 export default {
