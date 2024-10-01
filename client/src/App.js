@@ -5,6 +5,7 @@ import ProductForm from './components/ProductForm';
 import StockAlert from './components/StockAlert'; // 在庫アラートをインポート
 import ProductDetail from './pages/ProductDetail'; //商品詳細ページをインポート
 import './App.css'; // スタイル用のCSSファイルをインポート
+import Login from './components/Login';
 
 const App = () => {
   return (
@@ -26,6 +27,9 @@ const App = () => {
                 <li>
                   <Link to="/alerts">在庫アラート</Link>
                 </li>
+                <li>
+                  <Link to="/login">ログイン</Link>
+                </li>
               </ul>
             </nav>
           </div>
@@ -37,7 +41,8 @@ const App = () => {
             <Route path="/" element={<Dashboard />} />
             <Route path="/add-product" element={<ProductForm />} />
             <Route path="/alerts" element={<StockAlert />} />{' '}
-            <Route path="/products/:id" element={ <ProductDetail /> }></Route>
+            <Route path="/products/:id" element={<ProductDetail />}></Route>
+            <Route Path="/login" element={<Login/>}></Route>
             {/* 在庫アラート */}
           </Routes>
         </div>
