@@ -1,6 +1,5 @@
 // client/src/services/productService.js
 import api from './api'; // Axiosインスタンスをインポート
-import axios from 'axios';
 
 // 商品一覧を取得
 export const getProducts = () => {
@@ -23,7 +22,8 @@ export const getLowStockProducts = () => {
 };
 
 export const searchProducts = async (searchTerm) => {
-  return await axios.get(`${api}/products/search?name=${searchTerm}&sku=${searchTerm}`);
+  const encodedTerm = encodeURIComponent(searchTerm);
+  return await api.get(`/products/search?name=${encodedTerm}&sku=${encodedTerm}`);
 }
 
 export default {

@@ -1,32 +1,43 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import productService from "../services/productService";
 import api from "../services/api";
 
 const ProductList = () => {
-  const [searchTerm, setSearchTerm] = useState("");//検索するためのデータを持ってくる
-  const [products, setProducts] = useState([]);//一覧表示
-  const [errorMessage, setErrorMessage] = useState("");//検索結果の可否
-  const [searchResults, setSearchResults] = useState([]);//検索結果の保持
+  const [searchTerm, setSearchTerm] = useState(""); //検索するためのデータを持ってくる
+  const [products, setProducts] = useState([]); //一覧表示
+  const [allProducts, setAllProducts] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(""); //検索結果の可否
 
   useEffect(() => {
     // api.jsを通じてAPIリクエストを送る
     api
-      .get('/products')
-      .then((response) => setProducts(response.data))
-      .catch((error) => console.error('商品情報の取得に失敗しました:', error));
+      .get("/products")
+      .then((response) => {
+        setProducts(response.data);
+        setAllProducts(response.data);
+      })
+      .catch((error) => console.error("商品情報の取得に失敗しました:", error));
   }, []);
 
   const handleSearch = async () => {
-    try {
-      const response = await productService.searchProducts(searchTerm);
-      setProducts(response.data);
-      setErrorMessage(response.data.length === 0 ? '該当する商品がありません。' : '');
-    } catch (error) {
-      setErrorMessage("検索に失敗しました。");
+    if (!searchTerm) {
+      setProducts(allProducts);
+      setErrorMessage("");
+      return;
     }
+
+    const results = products.filter((product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.sku.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (results.length === 0) {
+      setErrorMessage("該当する商品がありません。");
+    } else {
+      setErrorMessage("");
+    }
+    setProducts(results);
   };
-  console.log(products)
 
   return (
     <div>
@@ -38,7 +49,8 @@ const ProductList = () => {
         placeholder="商品名またはSKUで検索"
       />
       <button onClick={handleSearch}>検索</button>
-      {errorMessage && <p>{ errorMessage }</p>}
+      {errorMessage && <p>{errorMessage}</p>}
+
       <ul>
         {products.map((product) => (
           <li key={product.id}>
