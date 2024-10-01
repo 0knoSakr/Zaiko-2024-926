@@ -73,4 +73,18 @@ Product.getLowStock = (result) => {
   });
 };
 
+Product.searchProducts = (name, sku, result) => {
+  const query = `
+  SELECT * FROM products
+  WHERE name  LIKE ? OR sku LIKE ?
+  `;
+  db.query(query, [`%${name}%`, `%${sku}%`], (err, res) => {
+    if (err) {
+      result(err, null);
+      return;
+    }
+    result(null, res);
+  });
+}
+
 module.exports = Product;

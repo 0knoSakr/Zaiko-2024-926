@@ -1,4 +1,15 @@
 const Product = require('../models/productModel');
+const productModel = require('../models/productModel');
+
+const searchProducts = async (req, res) => {
+  const { name, sku } = req.query;
+  try {
+    const products = await productModel.searchProducts(name, sku);
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ message: '検索中にエラーが発生しました。' });
+  }
+};
 
 // 全商品の取得
 exports.getAllProducts = (req, res) => {
@@ -52,3 +63,5 @@ exports.getLowStockProducts = (req, res) => {
     }
   });
 };
+
+exports.searchProducts = searchProducts;

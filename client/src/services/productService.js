@@ -21,9 +21,15 @@ export const getLowStockProducts = () => {
   return api.get('/products/low-stock');
 };
 
+export const searchProducts = async (searchTerm) => {
+  const encodedTerm = encodeURIComponent(searchTerm);
+  return await api.get(`/products/search?name=${encodedTerm}&sku=${encodedTerm}`);
+}
+
 export default {
   getProducts,
   getProductById,
   addProduct,
   getLowStockProducts,
+  searchProducts,
 };
