@@ -9,7 +9,7 @@ router.post('/', productController.addProduct);
 router.put('/:id', productController.updateProduct);
 router.delete('/:id', productController.deleteProduct);
 router.get('/search', productController.searchProducts);
-router.post('/login', Login)
+router.post('/login', productControllwe.Login)
 // 在庫が少ない商品を取得するエンドポイント
 router.get('/low-stock', productController.getLowStockProducts);
 
