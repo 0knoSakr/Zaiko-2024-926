@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const Login = () => {
   const [userName, setUserName] = useState("");
@@ -6,18 +7,18 @@ const Login = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    const response = await fetch("http://localhost:5000/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userName, password }),
-    });
-    const data = await response.json();
-    if (response.ok) {
-      console.log("Login successful:", data);
-    } else {
-      console.log("Login failed:", data.massage);
+    try {
+      const response = await axios.post("thhp://localhost:5000/api/login", {
+        userName,
+        password,
+      });
+      console.log("Login successful:", response.data);
+    } catch (error) {
+      if (error.response) {
+        console.log("Login failed:", error.response.data.message);
+      } else {
+        console.log("Login failed:", error.massage);
+      }
     }
   };
 
