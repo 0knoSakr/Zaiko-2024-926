@@ -73,6 +73,7 @@ Product.getLowStock = (result) => {
   });
 };
 
+//商品情報を検索する関数
 Product.searchProducts = (name, sku, result) => {
   const query = `
   SELECT * FROM products

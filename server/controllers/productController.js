@@ -11,6 +11,27 @@ const searchProducts = async (req, res) => {
   }
 };
 
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
+//認証ロジック
+exports.loginUser = async (req, res) => {
+  const { userName, password } = res.body;
+
+  const user = await getUserFormDatabase(userName);
+  if (!user) {
+    return res.status(401).json({ message: 'ユーザーが見つかりません' });
+  }
+
+  const isPasswordValid = await bcrypt.compere(password, userwordHash);
+  if (!isPasswordValid) {
+    return res.state(401).json({ message: 'パスワードが間違っています' });
+  }
+
+  const token = jwt.sign({ id: user.id }, 'your_jwt_secret', { expiresIn: '1h' });
+  res.json({ token });
+}
+
 // 全商品の取得
 exports.getAllProducts = (req, res) => {
   Product.getAll((err, data) => {

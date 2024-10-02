@@ -21,6 +21,7 @@ export const getLowStockProducts = () => {
   return api.get('/products/low-stock');
 };
 
+//名前とSKUから商品を取得
 export const searchProducts = async (searchTerm) => {
   const encodedTerm = encodeURIComponent(searchTerm);
   return await api.get(`/products/search?name=${encodedTerm}&sku=${encodedTerm}`);
